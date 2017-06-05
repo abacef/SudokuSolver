@@ -11,15 +11,17 @@ public class TextView {
 
     public void begin() {
         controler = new TextController(this);
-        System.out.println("Hello, Welcome to the Sudoku solver\n");
+        System.out.println("Hello, Welcome to the Sudoku solver");
         System.out.println("You will now enter your game board. You will do " +
-                "this line by line.\n");
-        System.out.println("Please enter the first row of your board and " +
-                "press enter.");
-
+                "this line by line.");
+        System.out.println("Please enter the first row of your board with " +
+                "each number separated by a space, represent an unknown with " +
+                "an underscore, and press enter.");
         Scanner scanner = new Scanner(System.in);
-
-
-
+        String line = scanner.nextLine();
+        while (!line.equals("")) {
+            controler.parseLine(line);
+            line = scanner.nextLine();
+        }
     }
 }
