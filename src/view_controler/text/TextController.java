@@ -26,18 +26,19 @@ public class TextController {
                     lineArray[index] = 0;
                 }
                 else {
-                    lineArray[index] = (int)character;
+                    lineArray[index] = Character.getNumericValue(character);
                 }
                 index += 1;
             }
         }
-        System.out.println(lineArray);
         if (index != 9) {
-            System.out.println("make sure you entered 9 digits separated by " +
-                    "one or less space.");
             return false;
         }
         model.addRow(lineArray);
         return true;
+    }
+
+    public int[][] getBoard() {
+        return model.getBoard();
     }
 }
