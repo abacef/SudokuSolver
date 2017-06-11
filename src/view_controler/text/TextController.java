@@ -2,6 +2,8 @@ package view_controler.text;
 
 import model.Model;
 
+import java.util.ArrayList;
+
 /**
  * Created by abacef on 6/2/17.
  */
@@ -38,7 +40,19 @@ public class TextController {
         return true;
     }
 
+    public ArrayList<int[][]> backtrack() {
+        return model.backtrack(model.getBoard());
+    }
+
+    public boolean boardIsFull() {
+        return !(model.getBoard()[8][0] == 0);
+    }
+
     public int[][] getBoard() {
         return model.getBoard();
+    }
+
+    public int getCounter() {
+        return model.getCounter();
     }
 }

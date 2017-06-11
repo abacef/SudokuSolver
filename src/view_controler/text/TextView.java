@@ -1,5 +1,6 @@
 package view_controler.text;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -7,10 +8,12 @@ import java.util.Scanner;
  */
 public class TextView {
 
-    public TextController controler;
+    private TextController controller;
+
+    private ArrayList<int[][]> goalConfigs;
 
     public TextView() {
-        controler = new TextController(this);
+        controller = new TextController(this);
     }
 
     public void begin() {
@@ -23,19 +26,30 @@ public class TextView {
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
         while (!line.equals("")) {
-            if (!controler.parseLine(line)) {
-                System.out.println("make sure you entered 9 digits separated by " +
-                        "one or less space.");
+            if (!controller.parseLine(line)) {
+                System.out.println("make sure you entered 9 digits separated by" +
+                        " one or less space.");
             }
             System.out.println("The board you entered so far:");
             printBoard();
+            if (controller.boardIsFull()) {
+                System.out.println("Your board is complete. Press enter to " +
+                        "begin the solver.");
+                scanner.nextLine();
+                goalConfigs = controller.backtrack();
+                if (goalConfigs == null) {
+                    System.out.println("Sorry, unfortunately the " +
+                            "configuration you entered is not solvable");
+                }
+            }
             System.out.println("Please enter the next line");
             line = scanner.nextLine();
         }
     }
 
     private void printBoard() {
-        int[][] board = controler.getBoard();
+        int[][] board = controller.getBoard();
+        int counter = controller.getCounter();
         for (int i = 0; i < 9; i++) {
             System.out.println();
             if (i % 3 == 0 && i != 0) {
@@ -46,7 +60,11 @@ public class TextView {
                     System.out.print("  ");
                 }
                 if (board[i][j] == 0) {
-                    System.out.print("?");
+                    if (counter <= i) {
+                        System.out.print("?");
+                    } else {
+                        System.out.print("_");
+                    }
                 }
                 else {
                     System.out.print(board[i][j]);
