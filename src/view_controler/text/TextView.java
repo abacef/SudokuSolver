@@ -13,7 +13,7 @@ public class TextView {
     private ArrayList<int[][]> goalConfigs;
 
     public TextView() {
-        controller = new TextController(this);
+        controller = new TextController();
     }
 
     public void begin() {
@@ -21,13 +21,16 @@ public class TextView {
         System.out.println("You will now enter your game board. You will do " +
                 "this line by line.");
         System.out.println("Please enter the first row of your board with " +
-                "each number separated by a space, represent an unknown with " +
-                "an underscore, and press enter.");
+                "each number (separated by spaces or not). represent an " +
+                "unknown with an underscore, and press enter.");
         Scanner scanner = new Scanner(System.in);
+        System.out.print("> ");
         String line = scanner.nextLine();
-        while (!line.equals("")) {
+        while (true) {
+            System.out.print("> ");
             if (!controller.parseLine(line)) {
-                System.out.println("make sure you entered 9 digits separated by" +
+                System.out.println("ERROR: make sure you entered 9 digits " +
+                        "separated by" +
                         " one or less space.");
             }
             System.out.println("The board you entered so far:");
@@ -40,6 +43,7 @@ public class TextView {
                 if (goalConfigs == null) {
                     System.out.println("Sorry, unfortunately the " +
                             "configuration you entered is not solvable");
+                    break;
                 }
             }
             System.out.println("Please enter the next line");

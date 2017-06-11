@@ -9,12 +9,9 @@ import java.util.ArrayList;
  */
 public class TextController {
 
-    private TextView view;
-
     private Model model;
 
-    public TextController(TextView view) {
-        this.view = view;
+    public TextController() {
         this.model = new Model();
     }
 
@@ -22,18 +19,25 @@ public class TextController {
         int[] lineArray = new int[9];
         int index = 0;
         for (int i = 0; i < line.length(); i++) {
+            if (index == 9) {
+                return false;
+            }
             char character = line.charAt(i);
             if (character != ' ') {
                 if (character == '_') {
                     lineArray[index] = 0;
                 }
                 else {
-                    lineArray[index] = Character.getNumericValue(character);
+                    int entry = Character.getNumericValue(character);
+                    if (entry == -1) {
+                        return false;
+                    }
+                    lineArray[index] = entry;
                 }
                 index += 1;
             }
         }
-        if (index != 9) {
+        if (index < 9) {
             return false;
         }
         model.addRow(lineArray);
@@ -45,7 +49,7 @@ public class TextController {
     }
 
     public boolean boardIsFull() {
-        return !(model.getBoard()[8][0] == 0);
+        return model.getCounter() == 9;
     }
 
     public int[][] getBoard() {
