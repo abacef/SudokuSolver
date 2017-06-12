@@ -48,8 +48,12 @@ public class TextController {
         return model.backtrack(model.getBoard());
     }
 
-    public boolean boardIsFull() {
+    public boolean boardHasBeenEntered() {
         return model.getCounter() == 9;
+    }
+
+    public void determineStart() {
+        model.determineStart();
     }
 
     public int[][] getBoard() {

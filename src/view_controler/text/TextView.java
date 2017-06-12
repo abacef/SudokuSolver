@@ -27,7 +27,6 @@ public class TextView {
         System.out.print("> ");
         String line = scanner.nextLine();
         while (true) {
-            System.out.print("> ");
             if (!controller.parseLine(line)) {
                 System.out.println("ERROR: make sure you entered 9 digits " +
                         "separated by" +
@@ -35,9 +34,10 @@ public class TextView {
             }
             System.out.println("The board you entered so far:");
             printBoard();
-            if (controller.boardIsFull()) {
+            if (controller.boardHasBeenEntered()) {
                 System.out.println("Your board is complete. Press enter to " +
                         "begin the solver.");
+                controller.determineStart();
                 scanner.nextLine();
                 goalConfigs = controller.backtrack();
                 if (goalConfigs == null) {
@@ -48,6 +48,7 @@ public class TextView {
             }
             System.out.println("Please enter the next line");
             line = scanner.nextLine();
+            System.out.print("> ");
         }
     }
 
