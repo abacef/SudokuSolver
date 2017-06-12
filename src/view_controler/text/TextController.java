@@ -45,7 +45,8 @@ public class TextController {
     }
 
     public ArrayList<int[][]> backtrack() {
-        return model.backtrack(model.getBoard());
+        model.backtrack();
+        return model.getPossibleConfigs();
     }
 
     public boolean boardHasBeenEntered() {
