@@ -47,17 +47,22 @@ public class Model {
         else {
             advance();
             for (int i = 1; i < 10; i++) {
+                System.out.println("Trying:");
+                System.out.println("currRow: " + currRow);
+                System.out.print("currColumn: " + currColumn);
+                printBoard(board);
                 board[currRow][currColumn] = i;
                 if (isValid()) {
                     backtrack();
                 }
             }
+            deadvance();
         }
     }
 
     private boolean isValid() {
         int num = board[currRow][currColumn];
-        for (int i = 0; i < board[currRow].length; i++) {
+        for (int i = 0; i < 9; i++) {
             if (i != currColumn && board[currRow][i] == num) {
                 return false;
             }
@@ -125,6 +130,24 @@ public class Model {
         }
     }
 
+    private void deadvance() {
+        if (currColumn == 0) {
+            if (currRow != 0) {
+                currColumn = 8;
+                currRow--;
+            }
+        }
+        else {
+            currColumn--;
+        }
+        if (!(currRow == 0 && currColumn == 0)) {
+            if (startingBoard[currRow][currColumn] != 0) {
+                deadvance();
+            }
+        }
+
+    }
+
     public boolean determineStart() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
@@ -132,6 +155,7 @@ public class Model {
                     currRow = i;
                     currColumn = j;
                     startingBoard = copyBoard();
+                    deadvance();
                     return true;
                 }
             }
@@ -159,10 +183,36 @@ public class Model {
         return possibleConfigs;
     }
 
+    private void printBoard(int[][] beard) {
+        for (int i = 0; i < 9; i++) {
+            System.out.println();
+            if (i % 3 == 0 && i != 0) {
+                System.out.println();
+            }
+            for (int j = 0; j < 9; j++) {
+                if (j % 3 == 0 && j != 0) {
+                    System.out.print("  ");
+                }
+                if (beard[i][j] == 0) {
+                    if (counter <= i) {
+                        System.out.print("?");
+                    } else {
+                        System.out.print("_");
+                    }
+                }
+                else {
+                    System.out.print(beard[i][j]);
+                }
+                System.out.print(" ");
+            }
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
         Model model = new Model();
         int[] a;
-        a = new int[] {5, 8, 6, 3, 7, 4, 9, 1, 2};
+        a = new int[] {5, 8, 6, 3, 7, 4, 9, 1, 0};
         model.addRow(a);
         a = new int[] {1, 3, 7, 9, 5, 2, 8, 6, 4};
         model.addRow(a);
@@ -180,15 +230,10 @@ public class Model {
         model.addRow(a);
         a = new int[] {3, 6, 8, 1, 9, 5, 4, 2, 7};
         model.addRow(a);
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                model.currRow = i;
-                model.currColumn = j;
-                if (!model.isValid()) {
-                    System.out.println(false);
-                }
-            }
+        model.determineStart();
+        model.backtrack();
+        for (int[][] item : model.possibleConfigs) {
+            model.printBoard(item);
         }
-        System.out.println(true);
     }
 }

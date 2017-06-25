@@ -5,7 +5,7 @@ import model.Model;
 import java.util.ArrayList;
 
 /**
- * Created by abacef on 6/2/17.
+ * things
  */
 public class TextController {
 

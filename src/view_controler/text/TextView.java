@@ -33,18 +33,27 @@ public class TextView {
                         " one or less space.");
             }
             System.out.println("The board you entered so far:");
-            printBoard();
+            printBoard(controller.getBoard());
             if (controller.boardHasBeenEntered()) {
+                controller.determineStart();
                 System.out.println("Your board is complete. Press enter to " +
                         "begin the solver.");
-                controller.determineStart();
                 scanner.nextLine();
                 goalConfigs = controller.backtrack();
                 if (goalConfigs == null) {
                     System.out.println("Sorry, unfortunately the " +
                             "configuration you entered is not solvable");
-                    break;
                 }
+                else {
+                    System.out.print("Your valid configuration" +
+                            (goalConfigs.size() == 1 ? " is:" : "s are:") +
+                            "\n");
+                    for (int[][] intList : goalConfigs) {
+                        System.out.println();
+                        printBoard(intList);
+                    }
+                }
+                System.exit(0);
             }
             System.out.println("Please enter the next line");
             line = scanner.nextLine();
@@ -52,8 +61,7 @@ public class TextView {
         }
     }
 
-    private void printBoard() {
-        int[][] board = controller.getBoard();
+    private void printBoard(int[][] board) {
         int counter = controller.getCounter();
         for (int i = 0; i < 9; i++) {
             System.out.println();
