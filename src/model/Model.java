@@ -9,46 +9,57 @@ import java.util.HashSet;
  */
 public class Model {
 
+    /** The game board to work with */
     private int[][] board;
 
+    /** The game board that the user entered. Used as a reference to not
+     * change those cells on the new game board */
     private int[][] startingBoard;
 
+    /** A reference to how many lines of the game board have been entered */
     private int counter;
 
-    private ArrayList<int[][]> possibleConfigs;
+    /** The winning configuration */
+    private int[][] winConfig;
 
+    /** The current row that the backtracker is modifying */
     private int currRow;
 
+    /** The current column that the backtracker is modifying */
     private int currColumn;
 
-    private boolean print = false;
+    /** Does the user want to print the process of finding the winConfig? */
+    private boolean print;
 
     public Model() {
         board = new int[9][9];
-        for (int i = 0; i < 9; i ++) {
-            for (int j = 0; j < 9; j++) {
-                board[i][j] = 0;
-            }
-        }
         counter = 0;
-        possibleConfigs = new ArrayList<>();
+        winConfig = null;
         startingBoard = null;
         currRow = 0;
         currColumn = 0;
     }
 
+    /**
+     * Adds a row to the model's internal state
+     * @param row the row to add
+     */
     public void addRow(int[] row) {
         board[counter] = row;
         counter += 1;
     }
 
+    /**
+     * The algorithm that finds the winning configuration using
+     * recursive backtracking.
+     */
     public void backtrack() {
         advance();
         if (isGoal()) {
             if (print) {
                 System.out.println("\nGOAL!");
             }
-            possibleConfigs.add(copyBoard());
+            winConfig = copyBoard();
             deadvance();
         }
         else {
@@ -66,6 +77,11 @@ public class Model {
         }
     }
 
+    /**
+     * @return if the configuration is valid so far. Checks that the row and
+     * column does not have the same number in it, then checks the appropriate
+     * 3x3 square that the current cell is in.
+     */
     private boolean isValid() {
         int num = board[currRow][currColumn];
         for (int i = 0; i < 9; i++) {
@@ -79,6 +95,7 @@ public class Model {
         return checkSquare();
     }
 
+    /** @return if the current 3x3 square does not contain the same number */
     private boolean checkSquare() {
         int topLeftRow;
         int topLeftCol;
@@ -105,7 +122,7 @@ public class Model {
                 break;
         }
         HashSet<Integer> repeat = new HashSet<>();
-        boolean b = true;
+        boolean b;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 b = repeat.add(board[i + topLeftRow][j + topLeftCol]);
@@ -117,10 +134,20 @@ public class Model {
         return true;
     }
 
+    /**
+     * @return is the current cell that the backtracker is checking the first
+     * imaginary square? If it is, that means that every cell entered in the
+     * board so far has been valid.
+     */
     private boolean isGoal() {
         return currRow == 9 && currColumn == 0;
     }
 
+    /**
+     * Advances the currColumn and currRow to the next cell. left to right,
+     * then top to bottom. Advances again if the starting board comes with an
+     * already filled number.
+     */
     private void advance() {
         if (currColumn == 8) {
             currColumn = 0;
@@ -136,6 +163,11 @@ public class Model {
         }
     }
 
+    /**
+     * the opposite of advancing. Deadvances the currColumn and currRow to the
+     * next cell. right to left, then bottom to top. Deadvances again if the
+     * starting board comes with an already filled number.
+     */
     private void deadvance() {
         if (currColumn == 0) {
             if (currRow != 0) {
@@ -153,12 +185,19 @@ public class Model {
         }
     }
 
+    /**
+     * Sets the starting cell pointers to the imaginary cell right before
+     * the starting cell in order to start by advancing the pointers in the
+     * backtracking algorithm. Also makes startingBoard hold a copy of the
+     * board.
+     */
     public void determineStart() {
         currRow = -1;
         currColumn = 8;
         startingBoard = copyBoard();
     }
 
+    /** @return a copy of the current board */
     private int[][] copyBoard() {
         int[][] newBoard = new int[9][9];
         for (int i = 0; i < board.length; i++) {
@@ -167,22 +206,33 @@ public class Model {
         return newBoard;
     }
 
+    /** @return the board */
     public int[][] getBoard() {
         return board;
     }
 
+    /** @return the row counter */
     public int getCounter() {
         return counter;
     }
 
-    public ArrayList<int[][]> getPossibleConfigs() {
-        return possibleConfigs;
+    /** @return The winning configuration */
+    public int[][] getWinConfig() {
+        return winConfig;
     }
 
+    /**
+     * Sets if the user wants print debugging or not
+     * @param yorn A string that could contain "y" or not
+     */
     public void setPrint(String yorn) {
         print = yorn.trim().equals("y");
     }
 
+    /**
+     * prints a current output of the status of backtracking the board
+     * @param i the number just placed into the current cell
+     */
     private void printThings(int i) {
         System.out.println("\nTrying:");
         System.out.println("currRow: " + currRow);
@@ -191,6 +241,7 @@ public class Model {
         printBoard(board);
     }
 
+    /** A copy of the board printing algorithm to use */
     private void printBoard(int[][] beard) {
         for (int i = 0; i < 9; i++) {
             System.out.println();
@@ -217,6 +268,10 @@ public class Model {
         System.out.println();
     }
 
+    /**
+     * tests the model methods. Easier than entering the borad row by row.
+     * @param args unused parameter
+     */
     public static void main(String[] args) {
         Model model = new Model();
         int[] a;
@@ -242,10 +297,8 @@ public class Model {
         long time = System.currentTimeMillis();
         model.backtrack();
         time = System.currentTimeMillis() - time;
-        for (int[][] item : model.possibleConfigs) {
-            System.out.println("\nThese are the possible configurations:");
-            model.printBoard(item);
-        }
+        System.out.println("\nThis is the possible configuration:");
+        model.printBoard(model.winConfig);
         System.out.println("took " + time * Math.pow(10, -3) + " seconds");
     }
 }

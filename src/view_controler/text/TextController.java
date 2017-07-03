@@ -2,19 +2,24 @@ package view_controler.text;
 
 import model.Model;
 
-import java.util.ArrayList;
-
 /**
- * things
+ * This class interacts with the view by returning stuff from the model
  */
 public class TextController {
 
+    /** an instance of the current model to call methods on */
     private Model model;
 
     public TextController() {
         this.model = new Model();
     }
 
+    /**
+     * does the work of parsing a line of user-entered text
+     * @param line a string of a line to the game board that the user entered
+     * @return if the string is in the correct format to be added to the game
+     * board
+     */
     public boolean parseLine(String line) {
         int[] lineArray = new int[9];
         int index = 0;
@@ -44,24 +49,36 @@ public class TextController {
         return true;
     }
 
-    public ArrayList<int[][]> backtrack(String debugging) {
+    /**
+     * Calls the backtracking algorithm
+     * @param debugging if the user wants debugging or not
+     * @return the winning configuration or lack thereof
+     */
+    public int[][] backtrack(String debugging) {
         model.setPrint(debugging);
         model.backtrack();
-        return model.getPossibleConfigs();
+        return model.getWinConfig();
     }
 
+    /**
+     * @return if the counter is on the first imajinary line of the game
+     * board, therefore the other lines have been entered
+     */
     public boolean boardHasBeenEntered() {
         return model.getCounter() == 9;
     }
 
+    /** Calls determineStart on the model */
     public void determineStart() {
         model.determineStart();
     }
 
+    /** @return the current board configuration from the model */
     public int[][] getBoard() {
         return model.getBoard();
     }
 
+    /** @return the counter from the model */
     public int getCounter() {
         return model.getCounter();
     }
