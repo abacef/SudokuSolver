@@ -36,10 +36,11 @@ public class TextView {
             printBoard(controller.getBoard());
             if (controller.boardHasBeenEntered()) {
                 controller.determineStart();
-                System.out.println("Your board is complete. Press enter to " +
-                        "begin the solver.");
-                scanner.nextLine();
-                goalConfigs = controller.backtrack();
+                System.out.println("Your board is complete. Enter \"y\" for " +
+                        "print process output or enter anything else for just" +
+                        " the answer(s)");
+                line = scanner.nextLine();
+                goalConfigs = controller.backtrack(line);
                 if (goalConfigs == null) {
                     System.out.println("Sorry, unfortunately the " +
                             "configuration you entered is not solvable");

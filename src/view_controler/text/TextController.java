@@ -44,7 +44,8 @@ public class TextController {
         return true;
     }
 
-    public ArrayList<int[][]> backtrack() {
+    public ArrayList<int[][]> backtrack(String debugging) {
+        model.setPrint(debugging);
         model.backtrack();
         return model.getPossibleConfigs();
     }

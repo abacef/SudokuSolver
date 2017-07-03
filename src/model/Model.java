@@ -21,6 +21,8 @@ public class Model {
 
     private int currColumn;
 
+    private boolean print = true;
+
     public Model() {
         board = new int[9][9];
         for (int i = 0; i < 9; i ++) {
@@ -41,21 +43,25 @@ public class Model {
     }
 
     public void backtrack() {
+        advance();
         if (isGoal()) {
+            if (print) {
+                System.out.println("\nGOAL!");
+            }
             possibleConfigs.add(copyBoard());
+            deadvance();
         }
         else {
-            advance();
             for (int i = 1; i < 10; i++) {
-                System.out.println("Trying:");
-                System.out.println("currRow: " + currRow);
-                System.out.print("currColumn: " + currColumn);
-                printBoard(board);
                 board[currRow][currColumn] = i;
+                if (print) {
+                    printThings(i);
+                }
                 if (isValid()) {
                     backtrack();
                 }
             }
+            board[currRow][currColumn] = 0;
             deadvance();
         }
     }
@@ -145,22 +151,12 @@ public class Model {
                 deadvance();
             }
         }
-
     }
 
-    public boolean determineStart() {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == 0) {
-                    currRow = i;
-                    currColumn = j;
-                    startingBoard = copyBoard();
-                    deadvance();
-                    return true;
-                }
-            }
-        }
-        return false;
+    public void determineStart() {
+        currRow = -1;
+        currColumn = 8;
+        startingBoard = copyBoard();
     }
 
     private int[][] copyBoard() {
@@ -181,6 +177,18 @@ public class Model {
 
     public ArrayList<int[][]> getPossibleConfigs() {
         return possibleConfigs;
+    }
+
+    public void setPrint(String yorn) {
+        print = yorn.trim().equals("y");
+    }
+
+    private void printThings(int i) {
+        System.out.println("\nTrying:");
+        System.out.println("currRow: " + currRow);
+        System.out.println("currColumn: " + currColumn);
+        System.out.print("Number = " + i);
+        printBoard(board);
     }
 
     private void printBoard(int[][] beard) {
@@ -233,6 +241,7 @@ public class Model {
         model.determineStart();
         model.backtrack();
         for (int[][] item : model.possibleConfigs) {
+            System.out.println("\nThese are the possible configurations:");
             model.printBoard(item);
         }
     }
