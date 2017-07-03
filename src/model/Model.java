@@ -21,7 +21,7 @@ public class Model {
 
     private int currColumn;
 
-    private boolean print = true;
+    private boolean print = false;
 
     public Model() {
         board = new int[9][9];
@@ -109,7 +109,7 @@ public class Model {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 b = repeat.add(board[i + topLeftRow][j + topLeftCol]);
-                if (!b) {
+                if (board[i + topLeftRow][j + topLeftCol] != 0 && !b) {
                     return false;
                 }
             }
@@ -220,29 +220,32 @@ public class Model {
     public static void main(String[] args) {
         Model model = new Model();
         int[] a;
-        a = new int[] {5, 8, 6, 3, 7, 4, 9, 1, 0};
+        a = new int[] {0, 0, 5, 9, 0, 0, 0, 7, 6};
         model.addRow(a);
-        a = new int[] {1, 3, 7, 9, 5, 2, 8, 6, 4};
+        a = new int[] {0, 4, 0, 3, 5, 0, 0, 2, 0};
         model.addRow(a);
-        a = new int[] {2, 4, 9, 8, 1, 6, 5, 7, 3};
+        a = new int[] {0, 0, 8, 0, 0, 0, 0, 0, 0};
         model.addRow(a);
-        a = new int[] {8, 7, 2, 5, 4, 3, 1, 9, 6};
+        a = new int[] {4, 0, 0, 7, 2, 0, 0, 0, 0};
         model.addRow(a);
-        a = new int[] {6, 9, 3, 7, 8, 1, 2, 4, 5};
+        a = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0};
         model.addRow(a);
-        a = new int[] {4, 1, 5, 6, 2, 9, 7, 3, 8};
+        a = new int[] {0, 0, 0, 0, 8, 9, 0, 0, 4};
         model.addRow(a);
-        a = new int[] {9, 5, 4, 2, 3, 7, 6, 8, 1};
+        a = new int[] {0, 0, 0, 0, 0, 0, 8, 0, 0};
         model.addRow(a);
-        a = new int[] {7, 2, 1, 4, 6, 8, 3, 5, 9};
+        a = new int[] {0, 8, 0, 0, 1, 3, 0, 9, 0};
         model.addRow(a);
-        a = new int[] {3, 6, 8, 1, 9, 5, 4, 2, 7};
+        a = new int[] {6, 3, 0, 0, 0, 2, 1, 0, 0};
         model.addRow(a);
         model.determineStart();
+        long time = System.currentTimeMillis();
         model.backtrack();
+        time = System.currentTimeMillis() - time;
         for (int[][] item : model.possibleConfigs) {
             System.out.println("\nThese are the possible configurations:");
             model.printBoard(item);
         }
+        System.out.println("took " + time * Math.pow(10, -3) + " seconds");
     }
 }
