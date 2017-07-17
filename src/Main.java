@@ -19,8 +19,7 @@ public class Main {
             view.begin();
         }
         else {
-            GUIView view = new GUIView();
-            view.begin();
+            GUIView.main(new String[0]);
         }
     }
 }
