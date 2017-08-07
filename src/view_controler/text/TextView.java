@@ -35,7 +35,6 @@ public class TextView {
             System.out.println("The board you entered so far:");
             printBoard(controller.getBoard());
             if (controller.boardHasBeenEntered()) {
-                controller.determineStart();
                 System.out.println("Your board is complete. Enter \"y\" for " +
                         "print process output or enter anything else for just" +
                         " the answer");

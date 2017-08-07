@@ -36,8 +36,9 @@ public class Model {
         counter = 0;
         winConfig = null;
         startingBoard = null;
-        currRow = 0;
-        currColumn = 0;
+        currRow = -1;
+        currColumn = 8;
+        print = false;
     }
 
     /**
@@ -47,6 +48,9 @@ public class Model {
     public void addRow(int[] row) {
         board[counter] = row;
         counter += 1;
+        if (counter == 9) {
+            startingBoard = copyBoard();
+        }
     }
 
     /**
@@ -174,8 +178,7 @@ public class Model {
                 currColumn = 8;
                 currRow--;
             }
-        }
-        else {
+        } else {
             currColumn--;
         }
         if (!(currRow == 0 && currColumn == 0)) {
@@ -183,18 +186,6 @@ public class Model {
                 deadvance();
             }
         }
-    }
-
-    /**
-     * Sets the starting cell pointers to the imaginary cell right before
-     * the starting cell in order to start by advancing the pointers in the
-     * backtracking algorithm. Also makes startingBoard hold a copy of the
-     * board.
-     */
-    public void determineStart() {
-        currRow = -1;
-        currColumn = 8;
-        startingBoard = copyBoard();
     }
 
     /** @return a copy of the current board */
@@ -219,6 +210,11 @@ public class Model {
     /** @return The winning configuration */
     public int[][] getWinConfig() {
         return winConfig;
+    }
+
+    /** @return The starting board */
+    public int[][] getStartingBoard() {
+        return startingBoard;
     }
 
     /**
@@ -293,7 +289,6 @@ public class Model {
         model.addRow(a);
         a = new int[] {6, 3, 0, 0, 0, 2, 1, 0, 0};
         model.addRow(a);
-        model.determineStart();
         long time = System.currentTimeMillis();
         model.backtrack();
         time = System.currentTimeMillis() - time;

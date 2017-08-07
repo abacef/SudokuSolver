@@ -68,11 +68,6 @@ public class TextController {
         return model.getCounter() == 9;
     }
 
-    /** Calls determineStart on the model */
-    public void determineStart() {
-        model.determineStart();
-    }
-
     /** @return the current board configuration from the model */
     public int[][] getBoard() {
         return model.getBoard();

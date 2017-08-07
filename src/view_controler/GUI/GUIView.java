@@ -11,8 +11,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -30,7 +28,7 @@ public class GUIView extends Application {
     @Override
     public void start(Stage primaryStage) {
         model = new Model();
-        controller = new GUIController();
+        controller = new GUIController(model);
         primaryStage.setTitle("Sudoku Solver");
         VBox mainBox = new VBox(20);
         mainBox.setPadding(new Insets(40));
@@ -46,11 +44,11 @@ public class GUIView extends Application {
         for (int i = 0; i < 9; i++) {
             index2 = new HBox(20);
             for (int j = 0; j < 9; j++) {
-               currBox = new TextField();
-               currBox.setPrefWidth(22);
-               currBox.setPrefHeight(22);
-               boxArray[i][j] = currBox;
-               index2.getChildren().add(currBox);
+                currBox = new TextField();
+                currBox.setPrefWidth(22);
+                currBox.setPrefHeight(22);
+                boxArray[i][j] = currBox;
+                index2.getChildren().add(currBox);
             }
             index1.getChildren().add(index2);
         }
@@ -58,6 +56,12 @@ public class GUIView extends Application {
 
         HBox buttonBox = new HBox(50);
         Button solve = new Button("Solve");
+        solve.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                controller.parseBoxes(boxArray);
+            }
+        });
         Button quit = new Button("Quit");
         quit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
