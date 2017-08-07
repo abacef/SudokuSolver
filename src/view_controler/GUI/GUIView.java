@@ -19,16 +19,22 @@ import model.Model;
 
 public class GUIView extends Application {
 
-    private Model model;
-
+    /** A reference to the controller */
     private GUIController controller;
 
+    /** The array of text fields to be able to easily reference */
     private TextField[][] boxArray;
 
+    /**
+     * The method that sets everything up for the user to start using. Sets
+     * up all the text fields for entering the numbers, gives some text
+     * instructions, and gives 2 buttons. One to quit, and one to solve.
+     *
+     * @param primaryStage The given basic stage
+     */
     @Override
     public void start(Stage primaryStage) {
-        model = new Model();
-        controller = new GUIController(model);
+        controller = new GUIController(new Model());
         primaryStage.setTitle("Sudoku Solver");
         VBox mainBox = new VBox(20);
         mainBox.setPadding(new Insets(40));
@@ -76,6 +82,11 @@ public class GUIView extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Runs the program
+     *
+     * @param args Argument passed into the program
+     */
     public static void main(String[] args) {
         launch(args);
     }

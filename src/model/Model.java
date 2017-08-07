@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 /**
- * Created by abacef on 6/2/17.
+ * The backend goodness that both the text based and the GUI application
+ * share. This is the internal state representation of the puzzle which also
+ * holds the components to backtrack (solve) when needed to.
  */
 public class Model {
 
@@ -265,7 +267,7 @@ public class Model {
     }
 
     /**
-     * tests the model methods. Easier than entering the borad row by row.
+     * tests the model methods. Easier than entering the board row by row.
      * @param args unused parameter
      */
     public static void main(String[] args) {

@@ -3,19 +3,29 @@ package view_controler.GUI;
 import javafx.scene.control.TextField;
 import model.Model;
 
-import java.util.ArrayList;
-
 /**
- * Created by abacef on 6/2/17.
+ * The class that mediates between the GUI and the internal state
  */
 public class GUIController {
 
     private Model model;
 
+    /**
+     * Constructor to have a reference to access the internal state.
+     * @param model the internal state reference to assign.
+     */
     public GUIController(Model model) {
         this.model = model;
     }
 
+    /**
+     * This method gets called when the solve button is pressed. It builds
+     * the internal state, backtracks, and then populates the empty boxes
+     * with the appropriate number. It also changes that number to be red
+     * just for the user to hae better readability.
+     *
+     * @param boxes
+     */
     public void parseBoxes(TextField[][] boxes) {
         for (TextField[] line : boxes) {
             int[] modelLine = new int[9];

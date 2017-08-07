@@ -11,7 +11,7 @@ public class Main {
      * The method starts the respective view. If there is an argument of any
      * kind, it starts a GUI program. if not, it starts a text based program.
      *
-     * @param args A string of characters or lack thereof.
+     * @param args A string argument or lack thereof.
      */
     public static void main(String[] args) {
         if (args.length == 0) {
